@@ -78,7 +78,7 @@ analytics:
 # Site Author
 author:
   name             : "Tiphaine Després"
-  avatar           : "/home/tiphaine/blog/SampleStat/assets/images/profil.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : #"/home/tiphaine/blog/SampleStat/assets/images/profil.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "I am postdoc fellow in forest ecology passionate of statistic, R coding, Emacs and others GNU softwares."
   location         : 
   email            :
