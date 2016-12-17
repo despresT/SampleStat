@@ -70,17 +70,17 @@ social:
 
 # Analytics
 analytics:
-  provider               : false # false (default), "google", "google-universal", "custom"
+  provider               : "google" # false (default), "google", "google-universal", "custom"
   google:
-    tracking_id          :
+    tracking_id          : "UA-89142370-1"
 
 
 # Site Author
 author:
   name             : "Tiphaine Després"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am postdoc fellow in forest ecology."
-  location         : "Prague, CZ"
+  avatar           : "/home/tiphaine/blog/SampleStat/images/profil.jpg"# path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  bio              : "I am postdoc fellow in forest ecology passionate of statistic, R coding, Emacs and others GNU softwares."
+  location         : 
   email            :
   uri              :
   bitbucket        :
@@ -174,7 +174,7 @@ sass:
 permalink: /:categories/:title/
 paginate: 5 # amount of posts to show
 paginate_path: /page:num/
-timezone: # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: Europe/Paris # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 
 # Plugins
