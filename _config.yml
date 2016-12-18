@@ -24,14 +24,11 @@ comments:
 
 defaults:
   # _posts
-  - scope:
+   scope:
       path: ""
       type: posts
     values:
       comments: true
-
-
-
 
 
   discourse:
