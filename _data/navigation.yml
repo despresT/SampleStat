@@ -1,7 +1,7 @@
 # main links
 main:
    - title: "About"
-     path: /about/
+     url: /about/
    - title: "Archives"
      url: /year-archive/
   # - title: "Sample Collections"
