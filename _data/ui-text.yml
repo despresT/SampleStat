@@ -13,7 +13,7 @@ en: &DEFAULT_EN
   ext_link_label             : "Direct Link"
   less_than                  : "less than"
   minute_read                : "minute read"
-  share_on_label             : "Share on"
+  share_on_label             : ""
   meta_label                 :
   tags_label                 : "Tags:"
   categories_label           : "Categories:"
@@ -24,7 +24,7 @@ en: &DEFAULT_EN
   related_label              : "You May Also Enjoy"
   follow_label               : "Follow:"
   feed_label                 : "Feed"
-  powered_by                 : "Powered by"
+  powered_by                 : "Theme by"
   website_label              : "Website"
   email_label                : "Email"
   recent_posts               : "Recent Posts"
