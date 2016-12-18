@@ -24,12 +24,12 @@ comments:
 
 
 defaults:
-  -
-    scope:
-      path: ""
-      type: "posts" # a collection in your site, in plural form
-    values:
-      comments: true
+-
+ scope:
+ path:	""
+ type: "posts" # a collection in your site, in plural form
+ values:
+  comments: true
 
   discourse:
     server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
