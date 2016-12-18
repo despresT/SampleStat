@@ -245,10 +245,11 @@ defaults:
       comments: true # true
       share: true
       related: true
- # Pages
+  # _pages
   - scope:
-      path: _pages
+      path: _page
       type: pages
     values:
-layout: page
+      layout: single
+      author_profile: true
 
