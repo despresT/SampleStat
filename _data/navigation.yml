@@ -6,7 +6,7 @@ main:
   - title: "About"
     url: /about/
   - title: "test"
-    url: www.google.fr
+    url: http://www.google.fr
 # - title: "Sample Posts"
  #    url: /year-archive/
   # - title: "Sample Collections"
