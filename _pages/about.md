@@ -1,7 +1,7 @@
 ---
 permalink: /about/
 title: "About"
-layout: page
+layout: pages
 ---
 
 **Sample Stat** is a blog about **Statistic** in ecology.
