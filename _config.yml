@@ -14,7 +14,7 @@ description              : "Blog about R statistic and Linux tips."
 url                      : "http://samplestat.org" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "DespresT/SampleStat" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : "/assets/images/logo-wo-frame-color.png" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
+teaser                   :  # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
@@ -27,7 +27,7 @@ comments:
     # https://developers.facebook.com/docs/plugins/comments
     appid                :
     num_posts            : # 5 (default)
-    colorscheme          : # "light" (default), "dark"
+    colorscheme          : "dark"# "light" (default), "dark"
 staticman:
   allowedFields          : ['name', 'email', 'url', 'message']
   branch                 : "gh-pages"
@@ -79,7 +79,7 @@ analytics:
 author:
   name             : 
   avatar           : "/assets/images/logo-wo-frame-color.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "To learn more on statistic, R coding, Emacs and others GNU softwares."
+  bio              : "To learn more on Statistic, R coding, Emacs and others GNU softwares."
   location         : 
   email            :
   uri              :
