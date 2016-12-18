@@ -247,8 +247,8 @@ defaults:
       related: true
   # _pages
   - scope:
-      path: _page
-      type: pages
+      path: _pages
+      type: page
     values:
       layout: single
       author_profile: true
