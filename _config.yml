@@ -27,7 +27,7 @@ defaults:
   -
     scope:
       path: ""
-      type: posts
+      type: "posts"
     values:
       comments: true
 
