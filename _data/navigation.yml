@@ -3,10 +3,8 @@
 main:
   - title: "Archive"
     url: /year-archive/
-  - title: "Tags Expanded"
-    url: /tags-expanded/
   - title: "Tags"
-    url: /tags/
+    url: /tags-list/
   - title: "About"
     url: /about/
   - title: "Resume"
