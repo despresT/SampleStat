@@ -10,8 +10,14 @@
 * TODO Beginning
 For this first post, I want to talk a little about 
 
-* READY Emacs + ESS = loving R                                      :emacs:R:
-Since my second year of university I have studied statistic with R on Windows using
+* Emacs                                                               :Emacs:
+** DONE Emacs + ESS = loving R                                            :R:
+   SCHEDULED: <2016-12-30 ven.>
+   :PROPERTIES:
+   :EXPORT_JEKYLL_LAYOUT:
+   :filename: 2016-12-30-emacs-ess-loving-r
+   :END:
+Since my second year of university I have studied Statistic with R on Windows using
 the basic text editor from the R GUI console. I was happy with it for a
 couple of years. However, when I start coding more complex and longer
 function, it was a nightmare to handle human issues, specially
@@ -22,11 +28,20 @@ editor to R. However, after trying R-Studio and Notepad++, I was not
 very happy with them. I always did not like the multi-windows
 design from R-Studio, and Notepad++ was only a better way to use
 the script function from the R GUI. It was not fully integrated
-R. Finally, I my professor told me about Emacs, and how it was working
+R. Finally, my professor told me about Emacs, and how it was working
 with R. I first try it with Windows, using the very good
 [[http://vgoulet.act.ulaval.ca/en/emacs/][Emacs version from Vincent Goulet]]. It was exactly what I was looking for. A software
 that can interact with R without a lot of windows, and well integrated
-with R. 
+with R. Few years later, I jump to Linux using first Manjaro (an
+ArchLinux distribution), and after Xubuntu to keep the very good XFCE
+desktop environment. 
+
+     #+ATTR_HTML: :width 300
+     [[file:assets/images/screenshoot-emacs.png]]
+
+
+
+
 
 For the reader who don't know anything about [[https://www.gnu.org/software/emacs/][Emacs]] this is a free
 software from the GNU licence which can speak R using [[https://ess.r-project.org/][ESS]] package (for Emacs
