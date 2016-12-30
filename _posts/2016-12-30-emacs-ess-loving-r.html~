@@ -35,19 +35,6 @@ desktop environment.
 
 
 
-
-<div class="figure">
-<p><img src="/images/screenshoot-emacs.png" alt="screenshoot-emacs.png" width="600" />
-</p>
-</div>
-
-
-
-
-
-
-
-
 <p>
 For the reader who don't know anything about <a href="https://www.gnu.org/software/emacs/">Emacs</a> this is a free
 software from the GNU licence which can speak R using <a href="https://ess.r-project.org/">ESS</a> package (for Emacs
