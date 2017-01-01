@@ -11,5 +11,6 @@ group :jekyll_plugins do
   gem "jekyll-feed"
   gem 'jekyll-github-metadata'
   gem "jemoji"
+  gem 'jekyll-seo-tag'
 end
 

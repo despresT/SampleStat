@@ -8,7 +8,7 @@
 # Site Settings
 locale                   : "en"
 title                    : "Sample Stat"
-title_separator          : "-"
+title_separator          : "|"
 name                     : "Tiphaine Després"
 description              : "Blog about R statistic and Linux tips."
 url                      : "http://samplestat.org" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
@@ -185,7 +185,8 @@ gems:
   - jekyll-feed
   - jemoji
   - jekyll-github-metadata
-
+  - jekyll-seo-tag
+  
 # mimic GitHub Pages with --safe
 whitelist:
   - jekyll-paginate
