@@ -37,7 +37,7 @@ ArchLinux distribution), and after Xubuntu to keep the very good XFCE
 desktop environment. 
 
 #+ATTR_HTML: :width 800
-[[/assets/images/screenshoot-emacs.png]]
+[[/assets/images/screenshoot-emacs.png][file:/assets/images/screenshoot-emacs.png]]
 
 
 
@@ -57,3 +57,8 @@ be used with Windows or Mac Os, and also Linux.
 I will put more articles in this blog describing how I am using Emacs
 with R, and for blogging, and hopefully you will consider it to use
 for your own projects.
+
+
+
+
+
