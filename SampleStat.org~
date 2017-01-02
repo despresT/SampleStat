@@ -41,11 +41,6 @@ desktop environment.
 
 
 
-
-
-
-
-
 For the reader who don't know anything about [[https://www.gnu.org/software/emacs/][Emacs]] this is a free
 software from the GNU licence which can speak R using [[https://ess.r-project.org/][ESS]] package (for Emacs
 Speaks Statistic). But Emacs did not speak only statistic, this is an
@@ -56,9 +51,4 @@ be used with Windows or Mac Os, and also Linux.
 
 I will put more articles in this blog describing how I am using Emacs
 with R, and for blogging, and hopefully you will consider it to use
-for your own projects.
-
-
-
-
-
+for your own 
