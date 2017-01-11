@@ -55,8 +55,7 @@ Using loop with R is not the proper behaviour to have. Indeed,
 using the apply functions family such as /tapply/, /lapply/, and so
 one are a better way to do it, but for me, this is in some case too
 complicated. Thus, instead of using apply functions, which are faster
-I used */for loop/*. 
+I used /*for loop*/. 
 
-=for loop= 
-
-
+=for loop=
+ 
