@@ -76,7 +76,7 @@ from your factor.
 Here is a short example:
 
 #+NAME: block1
-#+BEGIN_SRC R :results output :exports both
+#+BEGIN_SRC R :results output :exports both :session t
 library(data.table)
 set.seed(23) #set.seed to have the same random value as in this example
 to_convert <- factor(runif(1:10, min = 0, max = 100))
@@ -86,6 +86,10 @@ print(levels(to_convert))
 #+END_SRC
 
 #+RESULTS: block1
+: data.table 1.9.8
+:   The fastest way to learn (by data.table authors): https://www.datacamp.com/courses/data-analysis-the-data-table-way
+:   Documentation: ?data.table, example(data.table) and browseVignettes("data.table")
+:   Release notes, videos and slides: http://r-datatable.com
 :  [1] "22.3072855733335" "33.1896589370444" "42.3720560967922" "57.6603659661487"
 :  [5] "71.072455169633"  "81.9448956055567" "84.052187949419"  "96.3544549420476"
 :  [9] "97.8130409261212" "99.6611237060279"
@@ -93,13 +97,26 @@ print(levels(to_convert))
 
 
 
-#+BEGIN_SRC R :session t :var dummy=block1
+#+BEGIN_SRC R :session t :results output :exports both
 data.table(factor_to_convert = to_convert, 
            using_as_numeric_only = as.numeric(to_convert), 
            using_as_character_first = as.numeric(as.character(to_convert)))
 #+END_SRC
 
 #+RESULTS:
+#+begin_example
+    factor_to_convert using_as_numeric_only using_as_character_first
+ 1:  57.6603659661487                     4                 57.66037
+ 2:  22.3072855733335                     1                 22.30729
+ 3:  33.1896589370444                     2                 33.18966
+ 4:   71.072455169633                     5                 71.07246
+ 5:  81.9448956055567                     6                 81.94490
+ 6:  42.3720560967922                     3                 42.37206
+ 7:  96.3544549420476                     8                 96.35445
+ 8:  97.8130409261212                     9                 97.81304
+ 9:   84.052187949419                     7                 84.05219
+10:  99.6611237060279                    10                 99.66112
+#+end_example
 
 So, be careful when you are using factor with numerical levels and you
 want to convert them.
