@@ -73,7 +73,7 @@ convert them to the level number and not convert the writing number
 from your factor.
 Here is a short example:
 
-#+BEGIN_SRC R :exports both
+#+BEGIN_SRC R :exports both :colnames yes
 library(data.table)
 set.seed(23) #set.seed to have the same random value as in this example
 to_convert <- factor(runif(1:10, min = 0, max = 100))
@@ -84,16 +84,18 @@ data.table(factor_to_convert = to_convert, using_as_numeric_only = as.numeric(to
 
 
 #+RESULTS:
-| 57.6603659661487 |  4 | 57.6603659661487 |
-| 22.3072855733335 |  1 | 22.3072855733335 |
-| 33.1896589370444 |  2 | 33.1896589370444 |
-|  71.072455169633 |  5 |  71.072455169633 |
-| 81.9448956055567 |  6 | 81.9448956055567 |
-| 42.3720560967922 |  3 | 42.3720560967922 |
-| 96.3544549420476 |  8 | 96.3544549420476 |
-| 97.8130409261212 |  9 | 97.8130409261212 |
-|  84.052187949419 |  7 |  84.052187949419 |
-| 99.6611237060279 | 10 | 99.6611237060279 |
+| factor_to_convert | using_as_numeric_only | using_as_character_first |
+|-------------------+-----------------------+--------------------------|
+|  57.6603659661487 |                     4 |         57.6603659661487 |
+|  22.3072855733335 |                     1 |         22.3072855733335 |
+|  33.1896589370444 |                     2 |         33.1896589370444 |
+|   71.072455169633 |                     5 |          71.072455169633 |
+|  81.9448956055567 |                     6 |         81.9448956055567 |
+|  42.3720560967922 |                     3 |         42.3720560967922 |
+|  96.3544549420476 |                     8 |         96.3544549420476 |
+|  97.8130409261212 |                     9 |         97.8130409261212 |
+|   84.052187949419 |                     7 |          84.052187949419 |
+|  99.6611237060279 |                    10 |         99.6611237060279 |
 
 So, be careful when you are using factor with numerical levels and you
 want to convert them.

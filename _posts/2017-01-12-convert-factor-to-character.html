@@ -1,0 +1,110 @@
+---
+title: "Convert factor to character"
+date: 2017-01-12 00:00:00
+layout: 
+tags: convert factor R
+---
+<p>
+In R, you use sometimes function to convert vector to another
+format <code>as.character</code> or <code>as.numeric</code>. 
+However, you need to be careful when using the function <code>as.numeric</code> on
+a factor. Indeed, if the factor contains factor number, it will
+convert them to the level number and not convert the writing number
+from your factor.
+Here is a short example:
+</p>
+
+{% highlight R %}
+library(data.table)
+set.seed(23) #set.seed to have the same random value as in this example
+to_convert <- factor(runif(1:10, min = 0, max = 100))
+print(levels(to_convert))
+data.table(factor_to_convert = to_convert, using_as_numeric_only = as.numeric(to_convert), using_as_character_first = as.numeric(as.character(to_convert)))
+
+{% endhighlight %}
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">factor_to_convert</th>
+<th scope="col" class="org-right">using_as_numeric_only</th>
+<th scope="col" class="org-right">using_as_character_first</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">57.6603659661487</td>
+<td class="org-right">4</td>
+<td class="org-right">57.6603659661487</td>
+</tr>
+
+<tr>
+<td class="org-right">22.3072855733335</td>
+<td class="org-right">1</td>
+<td class="org-right">22.3072855733335</td>
+</tr>
+
+<tr>
+<td class="org-right">33.1896589370444</td>
+<td class="org-right">2</td>
+<td class="org-right">33.1896589370444</td>
+</tr>
+
+<tr>
+<td class="org-right">71.072455169633</td>
+<td class="org-right">5</td>
+<td class="org-right">71.072455169633</td>
+</tr>
+
+<tr>
+<td class="org-right">81.9448956055567</td>
+<td class="org-right">6</td>
+<td class="org-right">81.9448956055567</td>
+</tr>
+
+<tr>
+<td class="org-right">42.3720560967922</td>
+<td class="org-right">3</td>
+<td class="org-right">42.3720560967922</td>
+</tr>
+
+<tr>
+<td class="org-right">96.3544549420476</td>
+<td class="org-right">8</td>
+<td class="org-right">96.3544549420476</td>
+</tr>
+
+<tr>
+<td class="org-right">97.8130409261212</td>
+<td class="org-right">9</td>
+<td class="org-right">97.8130409261212</td>
+</tr>
+
+<tr>
+<td class="org-right">84.052187949419</td>
+<td class="org-right">7</td>
+<td class="org-right">84.052187949419</td>
+</tr>
+
+<tr>
+<td class="org-right">99.6611237060279</td>
+<td class="org-right">10</td>
+<td class="org-right">99.6611237060279</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+So, be careful when you are using factor with numerical levels and you
+want to convert them.
+</p>
