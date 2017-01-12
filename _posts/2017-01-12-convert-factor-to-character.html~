@@ -34,6 +34,13 @@ data.table(factor_to_convert = to_convert, using_as_numeric_only = as.numeric(to
 
 <col  class="org-right" />
 </colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">factor_to_convert</th>
+<th scope="col" class="org-right">using_as_numeric_only</th>
+<th scope="col" class="org-right">using_as_character_first</th>
+</tr>
+</thead>
 <tbody>
 <tr>
 <td class="org-right">57.6603659661487</td>

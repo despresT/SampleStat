@@ -65,35 +65,42 @@ I used /*for loop*/.
    :EXPORT_JEKYLL_LAYOUT:
    :filename: 2017-01-12-convert-factor-to-character
    :END:
-In R, you use sometimes function to convert vector to another
-format =as.character= or =as.numeric=. 
+In R, you used sometimes functions to convert vectors to another
+format with =as.character=, =as.factor= or =as.numeric=. 
+
 However, you need to be careful when using the function =as.numeric= on
 a factor. Indeed, if the factor contains factor number, it will
 convert them to the level number and not convert the writing number
 from your factor.
+
 Here is a short example:
 
-#+BEGIN_SRC R :exports both
+#+BEGIN_SRC R :results output :exports both
 library(data.table)
 set.seed(23) #set.seed to have the same random value as in this example
 to_convert <- factor(runif(1:10, min = 0, max = 100))
 print(levels(to_convert))
-data.table(factor_to_convert = to_convert, using_as_numeric_only = as.numeric(to_convert), using_as_character_first = as.numeric(as.character(to_convert)))
+data.table(factor_to_convert = to_convert, 
+           using_as_numeric_only = as.numeric(to_convert), 
+           using_as_character_first = as.numeric(as.character(to_convert)))
 
 #+END_SRC
 
-
 #+RESULTS:
-| 57.6603659661487 |  4 | 57.6603659661487 |
-| 22.3072855733335 |  1 | 22.3072855733335 |
-| 33.1896589370444 |  2 | 33.1896589370444 |
-|  71.072455169633 |  5 |  71.072455169633 |
-| 81.9448956055567 |  6 | 81.9448956055567 |
-| 42.3720560967922 |  3 | 42.3720560967922 |
-| 96.3544549420476 |  8 | 96.3544549420476 |
-| 97.8130409261212 |  9 | 97.8130409261212 |
-|  84.052187949419 |  7 |  84.052187949419 |
-| 99.6611237060279 | 10 | 99.6611237060279 |
+#+BEGIN_SRC R
+57.6603659661487	4	57.6603659661487
+22.3072855733335	1	22.3072855733335
+33.1896589370444	2	33.1896589370444
+71.072455169633	5	71.072455169633
+81.9448956055567	6	81.9448956055567
+42.3720560967922	3	42.3720560967922
+96.3544549420476	8	96.3544549420476
+97.8130409261212	9	97.8130409261212
+84.052187949419	7	84.052187949419
+99.6611237060279	10	99.6611237060279
+#+END_SRC
+
+
 
 So, be careful when you are using factor with numerical levels and you
 want to convert them.
