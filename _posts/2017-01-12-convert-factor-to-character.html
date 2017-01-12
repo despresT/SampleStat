@@ -44,19 +44,85 @@ data.table(factor_to_convert = to_convert,
            using_as_character_first = as.numeric(as.character(to_convert)))
 {% endhighlight %}
 
-<pre class="example">
-    factor_to_convert using_as_numeric_only using_as_character_first
- 1:  57.6603659661487                     4                 57.66037
- 2:  22.3072855733335                     1                 22.30729
- 3:  33.1896589370444                     2                 33.18966
- 4:   71.072455169633                     5                 71.07246
- 5:  81.9448956055567                     6                 81.94490
- 6:  42.3720560967922                     3                 42.37206
- 7:  96.3544549420476                     8                 96.35445
- 8:  97.8130409261212                     9                 97.81304
- 9:   84.052187949419                     7                 84.05219
-10:  99.6611237060279                    10                 99.66112
-</pre>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">factor_to_convert</th>
+<th scope="col" class="org-right">using_as_numeric_only</th>
+<th scope="col" class="org-right">using_as_character_first</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">57.6603659661487</td>
+<td class="org-right">4</td>
+<td class="org-right">57.6603659661487</td>
+</tr>
+
+<tr>
+<td class="org-right">22.3072855733335</td>
+<td class="org-right">1</td>
+<td class="org-right">22.3072855733335</td>
+</tr>
+
+<tr>
+<td class="org-right">33.1896589370444</td>
+<td class="org-right">2</td>
+<td class="org-right">33.1896589370444</td>
+</tr>
+
+<tr>
+<td class="org-right">71.072455169633</td>
+<td class="org-right">5</td>
+<td class="org-right">71.072455169633</td>
+</tr>
+
+<tr>
+<td class="org-right">81.9448956055567</td>
+<td class="org-right">6</td>
+<td class="org-right">81.9448956055567</td>
+</tr>
+
+<tr>
+<td class="org-right">42.3720560967922</td>
+<td class="org-right">3</td>
+<td class="org-right">42.3720560967922</td>
+</tr>
+
+<tr>
+<td class="org-right">96.3544549420476</td>
+<td class="org-right">8</td>
+<td class="org-right">96.3544549420476</td>
+</tr>
+
+<tr>
+<td class="org-right">97.8130409261212</td>
+<td class="org-right">9</td>
+<td class="org-right">97.8130409261212</td>
+</tr>
+
+<tr>
+<td class="org-right">84.052187949419</td>
+<td class="org-right">7</td>
+<td class="org-right">84.052187949419</td>
+</tr>
+
+<tr>
+<td class="org-right">99.6611237060279</td>
+<td class="org-right">10</td>
+<td class="org-right">99.6611237060279</td>
+</tr>
+</tbody>
+</table>
 
 <p>
 So, be careful when you are using factor with numerical levels and you
