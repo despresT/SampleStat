@@ -1,12 +1,3 @@
-#+AUTHOR: Tiphaine Després
-#+email: tiphaine.despres@gmail.com
-#+PROPERTY: BLOG Sample Stat
-#+STARTUP: fninline overview
-
-#+OPTIONS: <:nil d:nil timestamp:t
-#+OPTIONS: ^:nil tags:nil
-#+OPTIONS: toc:nil num:nil
-#+SEQ_TODO: TODO READY DONE
 * Emacs :Emacs:
 ** DONE Emacs + ESS = loving R :R:
    SCHEDULED: +<2016-12-30 ven.>
@@ -110,3 +101,4 @@
    I will take here an easy example that I have done latterly for my work.
    I wanted to build a short function to draw maps and save them of I needed to.
    Here is the code:
+** TODO hghg
