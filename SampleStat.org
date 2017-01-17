@@ -96,3 +96,8 @@
    |  99.6611237060279 |                    10 |         99.6611237060279 |
    So, be careful when you are using factor with numerical levels and you
    want to convert them.
+** TODO Creating a function
+   In R, most of people used build-in functions which are very useful for all basics statistical anayses. When you need to do more complex statistics you can use packages. There is almost every current statistical functions and more in the Cran repository. However, time to time you will need to build your own function. Usually, when I build a function is because for loop will not be efficient and that I need to put different parameters that I can change.
+   I will take here an easy example that I have done latterly for my work.
+   I wanted to build a short function to draw maps and save them of I needed to.
+   Here is the code:
