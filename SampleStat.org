@@ -45,7 +45,12 @@
    with R, and for blogging, and hopefully you will consider it to use
    for your own
 * R :R:
-** READY For loop                                                      :Loop:
+** DONE For loop                                                       :Loop:
+   SCHEDULED: <2017-01-20 ven.>
+   :PROPERTIES:
+   :EXPORT_JEKYLL_LAYOUT:
+   :filename: 2017-01-20-for-loop
+   :END:
    Using loop with R is not the proper behaviour to have. Indeed,
    using the apply functions family such as /tapply/, /lapply/, and so
    one are a better way to do it, but for me, this is in some case too
