@@ -43,7 +43,8 @@
    be used with Windows or Mac Os, and also Linux.
    I will put more articles in this blog describing how I am using Emacs
    with R, and for blogging, and hopefully you will consider it to use
-   for your own
+   for your own projects.
+
 * R :R:
 ** DONE For loop                                                       :Loop:
    SCHEDULED: <2017-01-20 ven.>
@@ -235,8 +236,226 @@ If you want, I have put the all code in my GitHub with the data-set [[https://gi
    |  99.6611237060279 |                    10 |         99.6611237060279 |
    So, be careful when you are using factor with numerical levels and you
    want to convert them.
-** TODO Creating a function                                        :function:
-   In R, most of people used build-in functions which are very useful for all basics statistical anayses. When you need to do more complex statistics you can use packages. There is almost every current statistical functions and more in the Cran repository. However, time to time you will need to build your own function. Usually, when I build a function is because for loop will not be efficient and that I need to put different parameters that I can change.
-   I will take here an easy example that I have done latterly for my work.
-   I wanted to build a short function to draw maps and save them of I needed to.
-   Here is the code:
+
+
+** DONE Creating a function                                        :function:
+   SCHEDULED: <2017-01-22 dim.>
+   :PROPERTIES:
+   :EXPORT_JEKYLL_LAYOUT:
+   :filename: 2017-01-22-creating-a-function
+   :END:
+   In R, most of people used build-in functions which are very useful
+   for all basics statistical analyses. When you need to do more complex
+   statistics you can use packages.
+   There is almost every current statistical functions and more in the
+   [[https://cran.r-project.org/][CRAN repository]]. However, time to time you will need to build your own function. Usually, when I build a function is because =for= loop will not be efficient and that I need to put different parameters that I can change.
+   I will take here an easy example that I have previously done for my work.
+   I wanted to build a short function to draw maps and save them if I needed to.
+
+#+BEGIN_SRC R  :session t :exports none
+
+setwd("./assets/data")
+
+#+END_SRC
+
+#+RESULTS:
+: /home/tiphaine/blog/SampleStat
+*** The data
+There is two tables in this example. The first one
+[[/assets/data/data_plot_scale.txt][data_plot_scale.txt]] is data of forest plots location, with different
+information such as the trees status, the (living or dead), mark (NA
+for no marks, DBH for trees with diameter information), dead for dead
+trees position only and mortality for mortality pattern), the stands names (Stand_ID.m),
+lng for longitude and lat for latitude coordinates and a result like
+state 1 to 3 in the column pattern_state.
+The second table is very similar but at the stand scale
+[[/assets/data/data_stand_scale.txt][data_stand_scale.txt]].
+
+Those data represent results of spatial patterns (aggregation,
+repulsion or random) in forest at the plot and stand scales. Because
+several plots, which could have different patterns states, are in one
+stands, the stands patterns could be different from the plots
+scale. Also, because I needed a tree threshold to compute spatial
+patterns, there is few plots and stands that cannot be analyse for the
+dead status (stands #4, for example).
+
+#+BEGIN_SRC R :results output :exports both :session t 
+library(data.table)
+data_plot_pat <- fread("data_plot_scale.txt") #read the data
+data_stand_pat <- fread("data_stand_scale.txt")
+
+data_plot_pat
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+      Status mark Stand_ID.m      lng      lat pattern_state
+   1:   dead dead         17 20.11335 49.18592        state2
+   2:   dead dead         17 20.11335 49.18592        state2
+   3:   dead dead         17 20.11335 49.18592        state2
+   4:   dead dead         17 20.11794 49.18627        state2
+   5:   dead dead         17 20.11798 49.18874        state2
+  ---                                                       
+1544: living   NA         33       NA       NA        state2
+1545: living   NA         33       NA       NA        state2
+1546: living   NA         33       NA       NA        state2
+1547: living   NA         33       NA       NA        state1
+1548: living   NA         33       NA       NA        state1
+#+end_example
+
+When doing functions you will need first to create arguments (vector) that will
+be used in the function. 
+In this example, I will use status as a proxy
+for Status (note the S uppercase difference), markk for selecting
+mark, and then just 2 others FALSE or TRUE vector is I want to have
+the graphics outputs with the stands and if I want to save same or not
+in the current directory.
+
+*** The function 
+#+BEGIN_SRC R :results output :exports code :session t
+map_draw_blog <- function (status, markk, with.stand, save, ...) { #usually put ... to path others arguments
+    library(ggmap)#use library instead of require to stop the function if you did not have the library
+    library(ggplot2)
+    library(data.table)
+     #plot prep data
+    setkey(data_plot_pat, Status, mark)
+    #below you need to put %in% for the mark to take into account the mark == NA
+    for_mapping_plot  <- data_plot_pat[Status == status & mark %in% markk] [, .( Stand_ID.m,lng, lat, pattern_state)] 
+
+    #remove duplicated rows
+    for_mapping_plot <- for_mapping_plot [!duplicated(for_mapping_plot )]
+
+     #Stand prep data
+    small_data_inf <- data_plot_pat[, .( Stand_ID.m, lng, lat)]
+
+    #compute the mean of lng and lat by Stand_ID.m with removing NA value  only to remove lat and lng NA value
+    to_map <-small_data_inf[, lapply(.SD, mean, na.rm = T), by = Stand_ID.m]
+
+    pattern_to_put_map <- data_stand_pat[Status == status & mark %in% markk] [, .(Stand_ID.m, pattern_state)]
+
+    for_mapping <- merge(to_map, pattern_to_put_map, by = "Stand_ID.m", all = T)#all = TRUE to keep all the no match from the 2 tables
+    #keep only data with complete cases (remove row with NA values)
+    for_mapping <- for_mapping[complete.cases(for_mapping)]
+    
+    #create the map background using Google satellite data
+    google_map <- get_map(location = c(14,46,26,49),  maptype = "satellite", source = "google", zoom = 6)
+    if(with.stand == TRUE) {
+        if(save == TRUE) {
+            ggmap(google_map) +  geom_point(data = for_mapping, aes(
+        lng,  lat, color = factor(pattern_state)), 
+	size = 10, alpha =.80)+  geom_point(data = for_mapping_plot,
+        aes( lng,  lat, color = factor(pattern_state)), size = 2)+  
+	geom_label(data = for_mapping, aes(lng,  lat + .2, label =
+        Stand_ID.m,color = factor(pattern_state)), size = 4) + 
+	ggsave(paste0(status, " ", markk, " map with stand and plots patterns.jpg"))
+        } else { #end if save = TRUE
+            ggmap(google_map) +  geom_point(data = for_mapping, aes(
+        lng,  lat, color = factor(pattern_state)), 
+	size = 10, alpha =.80)+  geom_point(data = for_mapping_plot,
+        aes( lng,  lat, color = factor(pattern_state)), size = 2) +  
+	geom_label(data = for_mapping, aes(lng,  lat + .2, label = Stand_ID.m,color = factor(pattern_state)), size = 4)
+        }
+    } else { #end if with.stand = TRUE
+        if(save == TRUE) {
+            ggmap(google_map) +  geom_point(data = for_mapping_plot,
+        aes( lng,  lat, color = factor(pattern_state)), size = 2)+  
+	geom_label(data = for_mapping_plot, aes(lng,  lat + .2, label
+        = Stand_ID.m,color = factor(pattern_state)), size = 4) + 
+	ggsave(paste0(status, " ", markk, " map without stand and plots patterns.jpg"))
+        } else {
+            ggmap(google_map) + geom_point(data = for_mapping_plot, aes( lng,  lat, color = factor(pattern_state)), size = 2)
+        }
+    }
+}
+#+END_SRC
+
+#+RESULTS:
+
+Here you can use the freshly build function =map_draw= that we just
+created. The status can be ="living"= or ="dead"=. 
+For the =markk= note that you need to put =NA= without any quote. Also,
+you can put just F for FALSE or write FALSE, and the same for TRUE,
+the result will be the same.
+
+ #+BEGIN_SRC R :session t :exports code :results output graphics :width 1200 :height 1000 :units "px" :file "./assets/data/plot_stand.jpg"
+map_draw_blog(status = "living", markk = NA, with.stand = T, save = F)
+map_draw_blog(status = "living", markk = "DBH", with.stand = FALSE, save = T)
+map_draw_blog(status = "dead", markk = "dead", with.stand = T, save = TRUE)
+map_draw_blog(status = "dead", markk = "mortality", with.stand = T, save = T)
+#+END_SRC
+
+
+[[/assets/data/fourplots.png][file:/assets/data/fourplots.png]]
+
+I edit the graph using [[https://inkscape.org/en/][Inkscape]] to put a red arrow on the plots/stands
+that appear only for living status.
+
+
+
+** TODO Nested =for= loop                                                :loop:
+I already talk about single =for= loop
+
+** TODO data.table :data.table:
+When you are doing a lot of R, you can find two different kind of
+people, the [[https://cran.r-project.org/web/packages/dplyr/index.html][dplyr]] and the [[https://github.com/Rdatatable/data.table/wiki][data.table]] people. Indeed, those to packages
+are used for table manipulation. They are like the [[http://ggplot2.org/][ggplot2]] function
+ for graphic, when you know them  they change
+your R experience and you cannot go back. 
+
+*** dplyr
+I will not talk a lot about =dplyr= package, because I am not using
+it. However, you need to know few things about it. Usually, =dplyr= is
+used with another package named [[https://github.com/tidyverse/tidyr][tidyr]], and since recently, you
+can find one package which will load both of them and more (load also
+=ggplot2=, =readr=, etc.) and named [[https://blog.rstudio.org/2016/09/15/tidyverse-1-0-0/][tidyverse]].
+
+To be simple, =dplyr= is very useful to handle object, and specially for
+sorting, sub-sample, etc. thanks to the new operator =%>%=.
+This operator will pipe object to another line to make more change on
+it. It is very convenient to avoid typing multiple times the object
+names like this:
+
+#+BEGIN_SRC R :results outputs  :exports both
+set.seed(121)
+data <- rnorm(10)
+data <- data + 44
+
+# With dplyr package
+library(dplyr)
+set.seed(121)
+data2 <- rnorm(10) %>%
+    + 44
+
+identical(data,data2)
+
+#+END_SRC
+
+#+RESULTS:
+: TRUE
+
+But, there is a lot of very nice function with =dplyr= to select,
+sub.select, sort, replace data from tables.
+
+If you are using emacs, you can define a key-bind for =%>%=. Here is the
+lisp code you will need to put in your .emacs config file. 
+#+BEGIN_SRC emacs-lisp
+;;Define shortcut key for %>% function
+(global-set-key (kbd "<M-f5>") 'dplyr-function)
+(defun dplyr-function ()
+  (interactive)
+  (insert " %>%"))
+#+END_SRC
+Thus, in my example, the shortcut will be Meta (Alt) - f5. Of 
+course, you can change it for whatever you like, just be sure that
+your shortcut is not already use.
+
+You will find a lot of site to learn more of the =dplyr= package on
+internet. The user community is large and you will find a lot of
+question/answer in [[http://stackoverflow.com/questions/tagged/dplyr][stackoverflow]] from the =dplyr= package.
+
+*** data.table
+I started using =data.table= a couple of year ago. At first, this is very
+hard and the syntax counterintuitive, but you will use to it.
+
+
+
