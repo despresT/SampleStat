@@ -85,7 +85,7 @@ for (i in variables_names) {
         geom_text() +
         annotate("text", label = paste0("text with variables names  ",i ), x = 2, y = 15, size = 8, fontface = "bold") +
         theme_few() +
-        ggsave(paste0("variables", "_", i,".jpg"))
+        ggsave(paste0("variables", "_", i,".pdf"))
 
     setwd(mainDir) #here very important to set the mainDir working directory again
 }

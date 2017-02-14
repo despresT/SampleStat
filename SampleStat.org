@@ -542,9 +542,12 @@ for (i in variables_names) {
 #+END_SRC
 
 Here it will check for three different paths in the same subfolder
-=results RandomForest
+=results RandomForest=
+
 =/Project X/Analyses/results RandomForest/temperature=
+
 =/Project X/Analyses/results RandomForest/slope=
+
 =/Project X/Analyses/results RandomForest/patterns=
 
 and save in each folder a file names =varialbes_temperature.pdf= (or slope.pdf
