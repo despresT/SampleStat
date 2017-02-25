@@ -6,7 +6,13 @@
   <head>
     {% include head.html %}
     {% include head/custom.html %}
-     {% feed_meta %} 
+    <link rel="alternate" type="application/rss+xml" title="SampleStat
+							    RSS" href="/feed.xml">
+        <link rel="alternate" type="application/rss+xml"
+	      title="SampleStat RSS" href="/feed.R.xml">
+	        <link rel="alternate" type="application/rss+xml" title="SampleStat RSS" href="/feed.emacs.xml">
+
+
   </head>
 
   <body class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}">
