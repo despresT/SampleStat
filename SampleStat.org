@@ -177,7 +177,7 @@ for (i in names(increment_data)) { #for loop to draw one by one, each line of tr
    #+RESULTS:
    [[file:Multiplot_radial_growth_sugar_maple_between_150_and_160_years_old.jpg]]
 
-
+  #+ATTR_HTML: :width 800
   [[/assets/data/Multiplot_radial_growth_sugar_maple_between_150_and_160_years_old.jpg][file:/assets/data/Multiplot_radial_growth_sugar_maple_between_150_and_160_years_old.jpg]]
 
 
@@ -384,7 +384,7 @@ map_draw_blog(status = "dead", markk = "dead", with.stand = T, save = TRUE)
 map_draw_blog(status = "dead", markk = "mortality", with.stand = T, save = T)
 #+END_SRC
 
-
+  #+ATTR_HTML: :width 800
 [[/assets/data/fourplots.png][file:/assets/data/fourplots.png]]
 
 I edit the graph using [[https://inkscape.org/en/][Inkscape]] to put a red arrow on the plots/stands
@@ -554,7 +554,7 @@ and save in each folder a file names =varialbes_temperature.pdf= (or slope.pdf
 or patterns.pdf) in the folder temperature (or slope or patterns).
 
 The outputs figures should look like this:
-
+  #+ATTR_HTML: :width 800
 [[/assets/data/variables_temperature.jpg][file:/assets/data/variables_temperature.jpg]]
 
 
