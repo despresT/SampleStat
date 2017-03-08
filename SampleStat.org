@@ -395,7 +395,7 @@ that appear only for living status.
 ** TODO Nested =for= loop                                                :loop:
 I already talk about single =for= loop
 
-** DONE data.table :data.table:
+** DONE data.table                                               :data_table:
    SCHEDULED: <2017-03-08 mer.>
    :PROPERTIES:
    :EXPORT_JEKYLL_LAYOUT:
@@ -641,4 +641,4 @@ The outputs figures should look like this:
   #+ATTR_HTML: :width 800
 [[/assets/data/variables_temperature.jpg][file:/assets/data/variables_temperature.jpg]]
 
-
+  
