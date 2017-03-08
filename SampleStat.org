@@ -395,7 +395,12 @@ that appear only for living status.
 ** TODO Nested =for= loop                                                :loop:
 I already talk about single =for= loop
 
-** TODO data.table :data.table:
+** DONE data.table :data.table:
+   SCHEDULED: <2017-03-08 mer.>
+   :PROPERTIES:
+   :EXPORT_JEKYLL_LAYOUT:
+   :filename: 2017-03-08-data-table-data-table-
+   :END:
 When you are doing a lot of R, you can find two different kind of
 people, the [[https://cran.r-project.org/web/packages/dplyr/index.html][dplyr]] and the [[https://github.com/Rdatatable/data.table/wiki][data.table]] people. Indeed, those to packages
 are used for table manipulation. They are like the [[http://ggplot2.org/][ggplot2]] function
