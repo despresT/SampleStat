@@ -455,12 +455,91 @@ question/answer in [[http://stackoverflow.com/questions/tagged/dplyr][stackoverf
 
 *** data.table
 I started using =data.table= a couple of years ago. At first, this is very
-hard and the syntax counterintuitive, but you will use to it.
+hard and the syntax is counter-intuitive, but you will use to it.
 The =data.table= function is known to be faster than the =dplyr= package,
 but the difference of speed will only be consequent for huge data set
-(millions or rows and hundred of columns). =data.table= is 
+(millions or rows and hundred of columns).
 
-The =data.table= is based on 
+=data.table= use less verbose than =dplyr= but is more complex to write in
+my opinion. Here is some examples ([[/assets/data/data_plot_scale.txt][the data are here]]):
+
+
+#+BEGIN_SRC R  :session t :exports none
+
+setwd("./assets/data")
+
+#+END_SRC
+
+#+RESULTS:
+
+
+#+BEGIN_SRC R :results outputs  :exports both :session t
+library(data.table)
+
+data_plot_pat <- fread("data_plot_scale.txt") #read the data
+data_plot_pat
+dim(data_plot_pat)
+
+#+END_SRC
+
+#+RESULTS:
+| 1548 |
+|    6 |
+
+
+#+BEGIN_SRC R :results outputs  :exports both :session t
+setkey(data_plot_pat, Status, mark)#set in the data table "data_plot_pat" first the Status, and then the mark
+
+selected_plot  <- data_plot_pat[Status == "living" & mark == "DBH"] [, .( Stand_ID.m,lng, lat, pattern_state)]#select plot with living status and DBH mark 
+# and then subset only the Stand__ID_m name, lng, lat and pattern_state
+print(dim(selected_plot))
+
+#+END_SRC
+
+#+RESULTS:
+| 504 |
+|   4 |
+
+
+And you can add 
+#+BEGIN_SRC R :results outputs  :exports both :session t
+selected_plot[,  lat :=  lat + 100 ]#make some change on a existed vector. Here add 100 for each row on the "lat" vector
+
+selected_plot[,  new_colmun :=  "repeated text"]#add a new column with the same value for each row (here this is "repeated text", but it could be numeric as well.
+print(dim(selected_plot))
+
+#+END_SRC
+
+#+RESULTS:
+| 504 |
+|   5 |
+
+As you can see, here there is a new column.
+
+
+And if you are using emacs and R, I suggest you to add the following package in
+your =.emacs= for the function =:== to have space between it, you can add
+this code:
+
+#+BEGIN_SRC emacs-lisp
+;; Electric operator will turn a=10*5+2 into a = 10 * 5 + 2, so let’s enable it for R
+(use-package electric-operator
+  :ensure t
+  :config
+  (setq electric-operator-R-named-argument-style 'spaced)
+  (add-hook 'ess-mode-hook #'electric-operator-mode))
+(electric-operator-add-rules-for-mode 'ess-mode
+  (cons ":=" " := "))
+#+END_SRC
+
+Also, the electric-operator will make you code easier to read by
+adding space between operator such as " == ", or " + ", etc.
+
+
+Because I am used to =data.table= and specially love the =fread= and
+=fwrite= function to read and save tables, I did not want to use
+=dplyr=. However, if you are a beginner, or you want to read old code
+easily years later, I suggest you to use =dplyr=.
 
 
 ** DONE Workflow                                                   :workflow:
