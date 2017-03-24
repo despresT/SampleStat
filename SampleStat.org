@@ -392,7 +392,12 @@ that appear only for living status.
 
 
 
-** TODO Nested =for= loop                                                :loop:
+** DONE Nested =for= loop                                                :loop:
+   SCHEDULED: <2017-03-24 ven.>
+   :PROPERTIES:
+   :EXPORT_JEKYLL_LAYOUT:
+   :filename: 2017-03-24-nested-for-loop
+   :END:
 I already talk about single =for= loop in a [[http://samplestat.org/for-loop/][previous post]]. The same way
 we did =for= loop for a single object, we can do it multiple times.
 
@@ -437,8 +442,7 @@ data.table 1.10.4
 
 
 And then we can try a nested loop like this:
-
-#+BEGIN_SRC R  :results outputs :exports both :session t
+#+BEGIN_SRC R  :results outputs :exports both :session t :rownames yes :colnames yes
 result_table <- NULL #create a NULL vector
 for (i in unique(data_stand[, Status])) {
     new_data <- data_stand[Status == i]
@@ -455,8 +459,8 @@ result_table
 #+END_SRC
 
 #+RESULTS:
-|  0 |  5 |
-| 32 | 23 |
+| living |  0 |  5 |
+| dead   | 32 | 23 |
 
 And here are the results. I know that we can do it in a simpler way,
 it was just here as an example and before presenting you the =foreach=

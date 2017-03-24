@@ -60,28 +60,17 @@ result_table
 
 
 <colgroup>
-<col  class="org-left" />
-
 <col  class="org-right" />
 
 <col  class="org-right" />
 </colgroup>
-<thead>
-<tr>
-<th scope="col" class="org-left">&#xa0;</th>
-<th scope="col" class="org-right">summary</th>
-<th scope="col" class="org-right">summary</th>
-</tr>
-</thead>
 <tbody>
 <tr>
-<td class="org-left">living</td>
 <td class="org-right">0</td>
 <td class="org-right">5</td>
 </tr>
 
 <tr>
-<td class="org-left">dead</td>
 <td class="org-right">32</td>
 <td class="org-right">23</td>
 </tr>
