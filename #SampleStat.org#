@@ -392,7 +392,12 @@ that appear only for living status.
 
 
 
-** TODO Nested =for= loop                                                :loop:
+** DONE Nested =for= loop                                                :loop:
+   SCHEDULED: <2017-03-24 ven.>
+   :PROPERTIES:
+   :EXPORT_JEKYLL_LAYOUT:
+   :filename: 2017-03-24-nested-for-loop
+   :END:
 I already talk about single =for= loop in a [[http://samplestat.org/for-loop/][previous post]]. The same way
 we did =for= loop for a single object, we can do it multiple times.
 

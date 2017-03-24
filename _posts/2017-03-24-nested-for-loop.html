@@ -1,0 +1,85 @@
+---
+title: "Nested <code>for</code> loop"
+date: 2017-03-24 11:51:15
+layout: 
+tags: loop R
+---
+<p>
+I already talk about single <code>for</code> loop in a <a href="/for-loop/">previous post</a>. The same way
+we did <code>for</code> loop for a single object, we can do it multiple times.
+</p>
+
+<p>
+Here a short example:
+First import the data from <a href="/assets/data/data_stand_scale.txt">here</a>
+</p>
+{% highlight R %}
+library(data.table) #load data.table at least V.1.10 (to have fread function)
+data_stand <- fread("data_stand_scale.txt") #read the data
+
+data_stand
+{% endhighlight %}
+
+<pre class="example">
+     Status      mark Stand_ID.m pattern_state
+  1: living        NA          1        state1
+  2: living       DBH          1        state2
+  3:   dead      dead          1        state1
+  4:   dead mortality          1        state1
+  5: living        NA          2        state3
+ ---                                          
+188: living       DBH         38        state2
+189:   dead      dead         38        state1
+190:   dead mortality         38        state3
+191: living        NA         39        state1
+192: living       DBH         39        state1
+</pre>
+
+
+
+<p>
+And then we can try a nested loop like this:
+</p>
+
+{% highlight R %}
+result_table <- NULL #create a NULL vector
+for (i in unique(data_stand[, Status])) {
+    new_data <- data_stand[Status == i]
+    summary_all <- NULL #create a NULL vector which will be erase at each loop increment
+
+    for (y in unique(new_data[, mark])) {
+        summary <- dim(new_data[mark == y][pattern_state == "state1"])[1]
+        summary_all <- cbind(summary_all, summary)
+        rownames(summary_all) <- i #to have the rownames according to the Status level
+    }
+    result_table <- rbind(result_table, summary_all)
+}
+result_table
+{% endhighlight %}
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">5</td>
+</tr>
+
+<tr>
+<td class="org-right">32</td>
+<td class="org-right">23</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+And here are the results. I know that we can do it in a simpler way,
+it was just here as an example and before presenting you the <code>foreach</code>
+loop which are used to do parallel computing.
+</p>
