@@ -47,7 +47,7 @@
    with R, and for blogging, and hopefully you will consider it to use
    for your own projects.
 
-** DONE =.emacs= in org mode :.emacs:
+** DONE =.emacs= in org mode                                             :blog:
    SCHEDULED: <2017-04-26 mer.>
    :PROPERTIES:
    :EXPORT_JEKYLL_LAYOUT:
@@ -75,7 +75,7 @@ be like this:
 And then you will have another file here name =emacs-init.org= which
 should start like this for example:
 
-#+BEGIN_SRC org :results html replace 
+#+BEGIN_SRC org 
 
 '* Init
 '** Packages & others

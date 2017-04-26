@@ -1,8 +1,8 @@
 ---
-title: "<code>.emacs</code> in org mode :.emacs:"
+title: "<code>.emacs</code> in org mode"
 date: 2017-04-26 00:00:00
 layout: 
-tags: Emacs
+tags: blog Emacs
 ---
 <p>
 Usually, when you are using Emacs, all your favourite shortcut and
@@ -35,7 +35,7 @@ should start like this for example:
 
 * Init
 ** Packages & others
-#+BEGIN_SRC emacs-lisp
+'#+BEGIN_SRC emacs-lisp
 (require 'package)
 (add-to-list 'package-archives
            '("melpa-stable" . "https://stable.melpa.org/packages/") t)
@@ -45,16 +45,16 @@ should start like this for example:
 	     '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
-#+END_SRC
+'#+END_SRC
 
 ** LaTeX
-#+BEGIN_SRC emacs-lisp
+'#+BEGIN_SRC emacs-lisp
 (load "auctex.el" nil t t)
 ;(load "preview-latex.el" nil t t)
 (pdf-tools-install)
 
 ...
-#+END_SRC
+'#+END_SRC
 
 
 {% endhighlight %}
