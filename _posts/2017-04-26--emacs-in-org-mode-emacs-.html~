@@ -1,0 +1,65 @@
+---
+title: "<code>.emacs</code> in org mode :.emacs:"
+date: 2017-04-26 00:00:00
+layout: 
+tags: Emacs
+---
+<p>
+Usually, when you are using Emacs, all your favourite shortcut and
+others Emacs characteristic are in the <code>.emacs</code> file. However, to have a
+better <code>.emacs</code> organisation, I suggest you to use the org-mode with
+your <code>.emacs</code>. Like this, you can organise very easily your <code>.emacs</code> and
+put categories 
+</p>
+
+<p>
+To doing so you will needed to put in your <code>.emacs</code> file a simple link to
+the org file with every Emacs customisation. Thus, the <code>.emacs</code> should
+be like this:
+</p>
+
+{% highlight cl %}
+(package-initialize)
+(require 'org)
+(org-babel-load-file
+ (expand-file-name "emacs-init.org"
+                   "~/."))
+{% endhighlight %}
+
+<p>
+And then you will have another file here name <code>emacs-init.org</code> which
+should start like this for example:
+</p>
+
+{% highlight org %}
+
+'* Init
+'** Packages & others
+'#+BEGIN_SRC emacs-lisp
+(require 'package)
+(add-to-list 'package-archives
+           '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;(add-to-list 'package-archives
+ ;            '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(package-initialize)
+'#+END_SRC
+
+'** LaTeX
+'#+BEGIN_SRC emacs-lisp
+(load "auctex.el" nil t t)
+;(load "preview-latex.el" nil t t)
+(pdf-tools-install)
+
+...
+'#+END_SRC
+
+
+{% endhighlight %}
+
+<p>
+As you can see, you simply need to put your <code>emacs-lisp</code> code using
+the <code>#+BEGIN_SRC</code> and <code>#+END_SRC</code> tags.
+</p>
