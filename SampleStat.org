@@ -782,7 +782,276 @@ The outputs figures should look like this:
   #+ATTR_HTML: :width 800
 [[/assets/data/variables_temperature.jpg][file:/assets/data/variables_temperature.jpg]]
 
-  
+
+** DONE parallelisation computing                   :foreach:parallelisation:
+   SCHEDULED: <2017-05-10 mer.>
+   :PROPERTIES:
+   :EXPORT_JEKYLL_LAYOUT:
+   :filename: 2017-05-10-parallelisation-computing
+   :END:
+   I already show you how to do =for= loop and nested =for= loop. When you
+   want to do parallelisation computing, you simply replace the =for=
+   command by the =foreach= command and =%dopart%=.
+
+   Depending if you are on Windows, MacOS or Linux, you will need to
+   do the parallelisation differently. I personally do it on Windows
+   and Linux. 
+
+   Within a =foreach= loop, you will need to declare the loop variable
+   as you usually do in the =for= command, but also to declare the
+   package that you are going to use within the foreach loop using the
+   command =.packages=. You also need to set the =.multicombine= to TRUE
+   is you want combine all the parallelism computing within a single
+   output and finally you can use the =.final= argument to customise the
+   output (list of list, etc.).
+
+   Keep in mind that the parallelisation will be processing using the
+   number of core that you declare in the =foreach= session and those
+   results will be sort in the same 
+#+BEGIN_SRC R  :session ppp :exports none
+
+setwd("./assets/data")
+
+#+END_SRC
+
+#+RESULTS:
+: org_babel_R_eoe
+
+
+   First we create 100 random point patterns with 2
+   different marks "A" and "B" : 
+#+BEGIN_SRC R :exports code  :session ppp
+                                        #creating random spatial data with 2 marks
+library(spatstat)
+
+plot_NA_list <- NULL
+for (i in 1:100) {
+                                        # some arbitrary coordinates in [0,1]
+    x <- runif(70)
+    y <- runif(70)
+
+                                        # marks
+    m <- as.factor(sample(c("A","B"), 70, replace=TRUE))
+                                        #creat ppp with marks    
+    X <- ppp(x, y, c(0,1), c(0,1), marks=m)
+    X <- list(X)
+    names(X) <- i #set the names for each ppp
+    plot_NA_list <- append(plot_NA_list,X)#add the ppp to the list
+}
+
+plot_NA_list[1:2]
+
+#+END_SRC
+
+#+RESULTS:
+|   0.178235811181366 |   0.446033634012565 | B |  0.293136175489053 |  0.653801246546209 | B |
+|   0.982202155515552 |   0.943698892137036 | A |  0.187058145413175 |  0.574426031205803 | B |
+|   0.485997586976737 |   0.345457341521978 | B |  0.687806749716401 |  0.108164394507185 | A |
+|  0.0942136764060706 |   0.361278478289023 | A |  0.753832652932033 |  0.937896109651774 | B |
+|   0.990501439664513 |   0.629987621447071 | A |  0.410852927481756 |  0.672555222874507 | A |
+|   0.638409179635346 |   0.688205918995664 | A |  0.404812213266268 |  0.642719876486808 | B |
+|  0.0635128114372492 |   0.369140591938049 | B |  0.577353144297376 |  0.405546917347237 | A |
+|   0.562087548431009 |    0.89777809754014 | B |  0.766907873563468 |  0.966103323735297 | A |
+|   0.929947039345279 |   0.993052802747115 | A |  0.267918081022799 |  0.998073594179004 | A |
+|   0.840864476049319 |   0.778286445187405 | A |  0.814753759885207 |  0.933854954782873 | A |
+|   0.859473191201687 |  0.0266987744253129 | A |   0.51143717369996 |  0.958336510695517 | B |
+|   0.836049718316644 |   0.878670446109027 | A |  0.102929058019072 | 0.0213675799313933 | A |
+|   0.266799793578684 |    0.80276807770133 | A |  0.705021009780467 |  0.297668824670836 | A |
+|   0.222695194650441 |   0.373976811766624 | B |  0.723751936806366 |  0.877793045248836 | B |
+|   0.126296093221754 |   0.427149170078337 | A |  0.423546209232882 |  0.973953835433349 | A |
+|   0.979839072329924 | 0.00974549329839647 | B |  0.992305501597002 |  0.934022538829595 | B |
+|   0.920393570326269 |   0.447758222231641 | B | 0.0870909553486854 |  0.642518486594781 | A |
+|   0.956250482005998 |   0.698137988569215 | A | 0.0097200486343354 |  0.747729609487578 | B |
+|   0.809820943512022 |  0.0799739048816264 | B | 0.0937591707333922 |   0.13979987311177 | A |
+|   0.640517248073593 |  0.0539754035416991 | B |  0.368376093218103 |  0.256978330900893 | B |
+|   0.744936273200437 |   0.125833083176985 | A |  0.143917118897662 |   0.11557754734531 | B |
+|   0.937822804087773 |   0.580358579521999 | B |  0.417496471432969 |  0.851235216017812 | B |
+|   0.193092923611403 |   0.412527493434027 | B |  0.665800288552418 |  0.514183542691171 | B |
+|     0.5665186077822 |  0.0649833523202688 | B |  0.984668186865747 |  0.816914425930008 | B |
+|   0.795180930988863 |   0.559661132050678 | A |   0.45747897727415 |  0.283178064506501 | B |
+|   0.458077958319336 |   0.853988186921924 | B |  0.834766268730164 |  0.881471778964624 | B |
+|   0.444388153031468 |   0.262503713835031 | B |  0.359108448727056 |  0.178792632417753 | B |
+|   0.419212525011972 |    0.14409041358158 | B |  0.981741467257962 |  0.244507765863091 | B |
+|   0.677952107740566 |   0.240050351014361 | A |  0.175573416985571 |  0.815301328664646 | A |
+|   0.121242294553667 |   0.335520513588563 | A |  0.574115817202255 |  0.778514846228063 | B |
+|   0.374293301487342 |   0.834740180522203 | A |  0.550726632587612 | 0.0382205951027572 | A |
+|   0.324699560413137 |   0.436641295673326 | B |  0.819059443194419 |  0.130349900107831 | B |
+|   0.608524817507714 |   0.526177315507084 | A |  0.806966312928125 |  0.232622705167159 | A |
+|   0.915085012791678 |   0.566422963747755 | B |  0.211057731183246 |  0.346570394001901 | B |
+|    0.77749353623949 |   0.613349170191213 | A |  0.933451583143324 |  0.937269183341414 | B |
+|  0.0338952864985913 |   0.837350956862792 | A |  0.303147401195019 |  0.300394032383338 | A |
+|   0.708241189364344 |   0.456883962266147 | A |  0.663409877568483 |  0.584589096019045 | A |
+|   0.887285922653973 |  0.0183937407564372 | B |   0.91531688394025 |  0.108738268492743 | B |
+|   0.235856196144596 |   0.177875706693158 | B |  0.969759672181681 |  0.171466938685626 | A |
+|   0.692489370703697 |   0.191109010251239 | B |  0.390496230684221 |  0.517687869258225 | A |
+|   0.252811327110976 |   0.542296398198232 | A |  0.186756192473695 |  0.844438930973411 | B |
+|   0.841526229633018 |   0.725022287340835 | B |  0.777648065239191 |  0.553474811138585 | B |
+|   0.108426594175398 |   0.862557342275977 | B |  0.662705155787989 |  0.166332412045449 | A |
+|   0.925625947536901 |   0.821802282007411 | A |  0.365246450062841 |  0.939627196174115 | B |
+|  0.0272850163746625 |   0.121080907061696 | B |  0.713126801187173 |  0.353060545632616 | B |
+|   0.848141149617732 |   0.494726108619943 | A |  0.142887549009174 |  0.209201141027734 | B |
+|   0.909416813170537 |   0.134309256449342 | B |  0.678307417081669 | 0.0655241201166064 | A |
+|   0.497103781905025 |   0.174431440187618 | B |  0.567212142283097 |  0.108313235454261 | B |
+|   0.273031330434605 |   0.960233947029337 | B |  0.110606585862115 |  0.220448701176792 | A |
+|   0.265365114435554 |   0.736102771013975 | A |  0.102075435686857 | 0.0885414774529636 | B |
+|   0.343853664351627 |    0.81914442894049 | B | 0.0838850701693445 |  0.915508883073926 | B |
+| 0.00124487071298063 |  0.0911274910904467 | B |   0.69131027511321 |  0.953248469857499 | A |
+|   0.166612213011831 |   0.456234954763204 | B |  0.991925877286121 |  0.726302648661658 | B |
+|   0.941765412688255 |   0.754728378262371 | A |  0.496673771878704 |  0.622708486625925 | A |
+|    0.97613445436582 |   0.692818390438333 | B |  0.122570308391005 | 0.0254669871646911 | A |
+|    0.19121417356655 |   0.507856244686991 | A |  0.911051369505003 |  0.394179210765287 | B |
+|  0.0506204818375409 |   0.635213942499831 | B | 0.0554685436654836 |  0.404398204525933 | B |
+|   0.887684044893831 |   0.674995809327811 | A |  0.474113722331822 |  0.807432294823229 | A |
+|   0.719856096897274 |   0.262462557293475 | B |  0.204019858269021 |  0.923174135386944 | A |
+|   0.478825626894832 |  0.0153752237092704 | B | 0.0511959013529122 |  0.329566069412977 | B |
+|   0.853202724596485 |   0.188115898985416 | A |  0.224704682361335 |  0.408276341157034 | A |
+|   0.614723110571504 |   0.482431817334145 | A | 0.0995969523210078 |  0.758882284164429 | A |
+|   0.139406540663913 |   0.717272781068459 | A | 0.0367248230613768 |  0.376514440169558 | B |
+| 0.00952805974520743 |   0.647450867341831 | B | 0.0279018289875239 |  0.797051758272573 | B |
+|   0.755539358127862 |   0.677949155913666 | B |  0.294323748443276 |  0.968754747183993 | B |
+|   0.337772969854996 |   0.708489937242121 | B |  0.146381304832175 |  0.969001144869253 | B |
+|   0.895248892949894 |   0.314483129186556 | B |  0.468561341054738 |  0.128374701365829 | A |
+|   0.350119968643412 |   0.703365243971348 | B |  0.216073553543538 | 0.0593425871338695 | A |
+|   0.748384117847309 |   0.124865685589612 | B |  0.955755517119542 |  0.321967642754316 | A |
+|  0.0992373046465218 |   0.133809152059257 | A |  0.705293025821447 |  0.374136530561373 | A |
+
+#+BEGIN_EXAMPLE
+$`1`
+Marked planar point pattern: 70 points
+Multitype, with levels = A, B 
+window: rectangle = [0, 1] x [0, 1] units
+
+$`2`
+Marked planar point pattern: 70 points
+Multitype, with levels = A, B 
+window: rectangle = [0, 1] x [0, 1] units
+#+END_EXAMPLE
+
+Before going more further, you will need to install the following
+package in R: 
+doMC (or doSNOW if you use Windows), spptest and marksummary package
+which are 2 greats packages when you do spatial point pattern (you can
+found them at [[https://github.com/myllym/GET][https://github.com/myllym/GET]] for the spptest package
+and at [[https://github.com/myllym/marksummary][https://github.com/myllym/marksummary]] for the mark summary
+package).
+
+The following code will compute the "Lest" function overall 30
+spatial pattern simulation (usually this is 2499 simulation) from the random data set. The "Lest" function will
+basically see if the mark "A" from the spatial pattern is randomly
+distributed regarding the mark "B" across the spatial pattern (this is
+define in the =simulate= argument in the =envelope= function. Then, we
+compute a rank envelope test ([[https://arxiv.org/abs/1307.0239v4][see here for more details]]). Thus, if the
+result from the rank envelope test is significant and when we plot it
+the observed data are above the envelope, then "A" and "B" have a
+positive correlation relationship (i.e. there are attracted one to another), if this is below the envelope threshold,
+then "A" and "B" have a negative correlation relationship (i.e. there
+are segregate one to another).
+
+Finally, we put the result of the rank envelope test into a list with
+also the random labelling residual data.
+
+
+#+BEGIN_SRC R :session ppp :exports code
+library(doMC) #only for Linux,used library(doSNOW) for Windows and uncomment the above lines
+                                        #      clusterN <-  detectCores()-1  ### choose number of nodes to add to cluster in doSNOW ; Compute the number of core available from the computer less 1
+                                        #      cl = makeCluster(clusterN, rscript="Rscript.exe", type='SOCK')  ###Cluster for doSNOW
+core <- detectCores()-1#Compute the number of core available from the computer less 1
+registerDoMC(core)#registerDoSNOW(cl) ###for Windows
+
+master_list <- NULL
+z <- NULL
+
+NA_list_result <- foreach(z = names(plot_NA_list),.packages = c("spatstat","spptest","marksummary"),.multicombine = TRUE, .final = function(z) setNames(z, names(plot_NA_list))) %dopar% {
+    plot_NA_list <- plot_NA_list[[z]]
+
+    ppp_envelope_NA <- envelope(plot_NA_list, fun = "Lest",nsim = 30,correction="translate",savefuns = TRUE,simulate = expression(runifpoint( plot_NA_list$n, win= plot_NA_list$window))) #need to change the simulation to 2499 and to add at the end 'simulate=expression(runifpoint(plot_one_specie$n, win=plot_one_specie$window))'
+    ppp_curve_set_NA <- envelope_to_curve_set(ppp_envelope_NA) #change the envelope class in a curve_set class. Need to add the use_theo argument
+    ppp_curve_set_NA$theo <-  ppp_curve_set_NA$r
+    res_NA <- residual(ppp_curve_set_NA,use_theo = TRUE)
+    rank_NA <- rank_envelope(res_NA,lexo = FALSE,savedevs = TRUE) #use to plot and to have result
+
+    master_list <- list(rank_env_NA = rank_NA,random_labelling = res_NA) #,residual_NA=res_NA
+    return(master_list)
+}  #stopCluster(cl)
+###End of parallelisation for Windows and Linux
+
+#+END_SRC
+
+#+RESULTS:
+
+It will took some time to compute every 100 spatial patterns.
+
+Then you should have this list of result:
+
+#+BEGIN_SRC R :session ppp  :results outup :exports both
+NA_list_result[1:2]
+
+#+END_SRC
+
+#+RESULTS:
+
+#+begin_example
+NA_list_result[1:2]
+$`1`
+$`1`$rank_env_NA
+Rank envelope test
+ p-value of the test: 0.3225806 (ties method: midrank)
+ p-interval         : (0.03225806, 0.6129032)
+
+$`1`$random_labelling
+curve_set object containing :
+List of 4
+ $ r          : num [1:513] 0 0.000488 0.000977 0.001465 0.001953 ...
+ $ obs        : num [1:513] 0 -0.000488 -0.000977 -0.001465 -0.001953 ...
+ $ sim_m      : num [1:513, 1:30] 0 -0.000488 -0.000977 -0.001465 -0.001953 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:513] "1" "2" "3" "4" ...
+  .. ..$ : chr [1:30] "sim1" "sim2" "sim3" "sim4" ...
+ $ is_residual: logi TRUE
+ - attr(*, "class")= chr "curve_set"
+
+
+$`2`
+$`2`$rank_env_NA
+Rank envelope test
+ p-value of the test: 0.8709677 (ties method: midrank)
+ p-interval         : (0.8064516, 0.9354839)
+
+$`2`$random_labelling
+curve_set object containing :
+List of 4
+ $ r          : num [1:513] 0 0.000488 0.000977 0.001465 0.001953 ...
+ $ obs        : num [1:513] 0 -0.000488 -0.000977 -0.001465 -0.001953 ...
+ $ sim_m      : num [1:513, 1:30] 0 -0.000488 -0.000977 -0.001465 -0.001953 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:513] "1" "2" "3" "4" ...
+  .. ..$ : chr [1:30] "sim1" "sim2" "sim3" "sim4" ...
+ $ is_residual: logi TRUE
+ - attr(*, "class")= chr "curve_set"
+#+end_example
+
+
+You can now plot the results from the rank envelope test:
+
+#+BEGIN_SRC R :session ppp :results output :exports code 
+library(ggplot2)
+jpeg("rank_envelope.jpg")
+plot(NA_list_result$"1"$rank_env_NA,use_ggplot2=TRUE)
+dev.off()
+#+END_SRC
+
+#+RESULTS:
+: Warning message:
+: `legend.margin` must be specified using `margin()`. For the old behavior use legend.spacing
+: X11cairo 
+:        2
+
+  #+ATTR_HTML: :width 800
+[[/assets/data/fourplots.png][file:/assets/data/rank_envelope.jpg]]
+
+
+
+
 * Blog                                                                 :Blog:
 ** TODO Blogging with Emacs in org-mode                           :org:Emacs:
    As I already told you in my first blog-post, I use to blog here with
