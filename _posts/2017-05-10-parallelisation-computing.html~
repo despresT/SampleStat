@@ -34,18 +34,18 @@ First we create 100 random point patterns with 2
 different marks "A" and "B" : 
 </p>
 {% highlight R %}
-#creating random spatial data with 2 marks
+                                        #creating random spatial data with 2 marks
 library(spatstat)
 
 plot_NA_list <- NULL
 for (i in 1:100) {
-    # some arbitrary coordinates in [0,1]
+                                        # some arbitrary coordinates in [0,1]
     x <- runif(70)
     y <- runif(70)
 
-    # marks
+                                        # marks
     m <- as.factor(sample(c("A","B"), 70, replace=TRUE))
-    #creat ppp with marks    
+                                        #creat ppp with marks    
     X <- ppp(x, y, c(0,1), c(0,1), marks=m)
     X <- list(X)
     names(X) <- i #set the names for each ppp
@@ -100,8 +100,8 @@ also the random labelling residual data.
 
 {% highlight R %}
 library(doMC) #only for Linux,used library(doSNOW) for Windows and uncomment the above lines
-#      clusterN <-  detectCores()-1  ### choose number of nodes to add to cluster in doSNOW ; Compute the number of core available from the computer less 1
-#      cl = makeCluster(clusterN, rscript="Rscript.exe", type='SOCK')  ###Cluster for doSNOW
+                                        #      clusterN <-  detectCores()-1  ### choose number of nodes to add to cluster in doSNOW ; Compute the number of core available from the computer less 1
+                                        #      cl = makeCluster(clusterN, rscript="Rscript.exe", type='SOCK')  ###Cluster for doSNOW
 core <- detectCores()-1#Compute the number of core available from the computer less 1
 registerDoMC(core)#registerDoSNOW(cl) ###for Windows
 
@@ -138,6 +138,7 @@ NA_list_result[1:2]
 {% endhighlight %}
 
 <pre class="example">
+NA_list_result[1:2]
 $`1`
 $`1`$rank_env_NA
 Rank envelope test
