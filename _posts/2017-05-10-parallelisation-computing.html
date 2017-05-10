@@ -183,13 +183,13 @@ You can now plot the results from the rank envelope test:
 
 {% highlight R %}
 library(ggplot2)
-jpeg("rank_envelope.jpg")
+jpeg("rank_envelope.jpg",width = 1200, height = 1200, units = "px",quality = 100)
 plot(NA_list_result$"1"$rank_env_NA,use_ggplot2=TRUE)
 dev.off()
 {% endhighlight %}
 
 
 <div class="figure">
-<p><a href="/assets/data/fourplots.png" width="800"><img src="/assets/data/rank_envelope.jpg" alt="rank_envelope.jpg" width="800" /></a>
+<p><a href="/assets/data/rank_envelope.jpg" width="800"><img src="/assets/data/rank_envelope.jpg" alt="rank_envelope.jpg" width="800" /></a>
 </p>
 </div>
