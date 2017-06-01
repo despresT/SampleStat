@@ -1,0 +1,68 @@
+---
+title: "Mean of the n last or first"
+date: 2017-06-01 00:00:00
+layout: 
+tags: data-table mean R
+---
+<p>
+A small post today that could be very useful. A colleague ask me
+how to compute the mean of the 5 oldest trees in a populations. The
+following code that I have found in <a href="https://stackoverflow.com/">stackoverflow</a>.
+</p>
+
+{% highlight R %}
+library(data.table)
+
+treeage <- data.table(age = rnorm(50,200,50), group = rep(LETTERS[1:5],each = 10)) #dataset with trees age in 5 different group
+
+
+subset_mean_three <- treeage[order(rank(age), group)][,tail(.SD,3),by=group] #subset the 3 oldest trees for each unique group
+group_age <- subset_mean_three [, .(age_mean= mean(age )), by = group] #Compute the mean of the tree age from the 3 oldest trees per group
+
+merge(treeage,group_age)[1:15] #adding the mean age of the 3 oldest trees in the treeage data table
+ 
+{% endhighlight %}
+
+<p>
+As well you can ask for the n quantile age distribution or the
+youngest trees ages with the
+following code:
+</p>
+
+{% highlight R %}
+#For the quantile :
+subset_quantile  <- treeage[, .(quantile_age = quantile(age,0.90)),by=group] #subset the 90 qauntile age for each unique group
+
+#For the 3 youngest trees:
+subset_mean_young <- treeage[order(rank(age), group)][,head(.SD,3),by=group] #subset the 3 youngest trees for each unique group
+group_age_young  <- subset_mean_young [, .(age_mean_young = mean(age )), by = group] #compute the mean of the 3 youngest trees for each groups
+
+
+#merge results
+Reduce(merge,list(treeage,group_age,subset_quantile,group_age_young))[1:15] #Merging all the tables together
+
+{% endhighlight %}
+
+<pre class="example">
+    group      age age_mean quantile_age age_mean_young
+ 1:     A 173.3567 303.9826     291.0337       170.4187
+ 2:     A 262.4292 303.9826     291.0337       170.4187
+ 3:     A 233.8751 303.9826     291.0337       170.4187
+ 4:     A 211.6698 303.9826     291.0337       170.4187
+ 5:     A 193.1739 303.9826     291.0337       170.4187
+ 6:     A 282.6023 303.9826     291.0337       170.4187
+ 7:     A 144.7256 303.9826     291.0337       170.4187
+ 8:     A 366.9163 303.9826     291.0337       170.4187
+ 9:     A 201.2530 303.9826     291.0337       170.4187
+10:     A 206.6334 303.9826     291.0337       170.4187
+11:     B 265.5331 292.0307     279.6926       185.2296
+12:     B 228.0602 292.0307     279.6926       185.2296
+13:     B 200.2322 292.0307     279.6926       185.2296
+14:     B 219.2227 292.0307     279.6926       185.2296
+15:     B 203.7675 292.0307     279.6926       185.2296
+</pre>
+
+<p>
+You can also see how to merge multiple data table together using the
+function <code>Reduce(merge, list(DT1, DT2, DT3, ...))</code> finding also in <a href="https://stackoverflow.com/questions/16186843/inline-code-in-org-mode">stackoverflow</a>.
+</p>

@@ -1051,6 +1051,241 @@ dev.off()
 
   
 
+** DONE Mean of the n last or first                         :mean:data_table:
+   SCHEDULED: <2017-06-01 jeu.>
+   :PROPERTIES:
+   :EXPORT_JEKYLL_LAYOUT:
+   :filename: 2017-06-01-mean-of-the-n-last-or-first
+   :END:
+   A small post today that could be very useful. A colleague ask me
+   how to compute the mean of the 5 oldest trees in a populations. The
+   following code that I have found in [[https://stackoverflow.com/][stackoverflow]].
+
+#+begin_src R :export both :session tree :results output
+library(data.table)
+
+treeage <- data.table(age = rnorm(50,200,50), group = rep(LETTERS[1:5],each = 10)) #dataset with trees age in 5 different group
+
+
+subset_mean_three <- treeage[order(rank(age), group)][,tail(.SD,3),by=group] #subset the 3 oldest trees for each unique group
+group_age <- subset_mean_three [, .(age_mean= mean(age )), by = group] #Compute the mean of the tree age from the 3 oldest trees per group
+
+merge(treeage,group_age)[1:15] #adding the mean age of the 3 oldest trees in the treeage data table
+ 
+#+end_src
+
+#+RESULTS:
+#+begin_example
+    group      age age_mean
+ 1:     A 223.3887 239.2596
+ 2:     A 161.6411 239.2596
+ 3:     A 182.6885 239.2596
+ 4:     A 124.2682 239.2596
+ 5:     A 246.7536 239.2596
+ 6:     A 244.2981 239.2596
+ 7:     A 174.3656 239.2596
+ 8:     A 224.0229 239.2596
+ 9:     A 226.7270 239.2596
+10:     A 158.1021 239.2596
+11:     B 206.5320 258.5834
+12:     B 202.4177 258.5834
+13:     B 159.5641 258.5834
+14:     B 256.1903 258.5834
+15:     B 244.4180 258.5834
+#+end_example
+
+As well you can ask for the n quantile age distribution or the
+youngest trees ages with the
+following code:
+
+#+begin_src R :session tree :results output :exports both
+#For the quantile :
+subset_quantile  <- treeage[, .(quantile_age = quantile(age,0.90)),by=group] #subset the 90 qauntile age for each unique group
+
+#For the 3 youngest trees:
+subset_mean_young <- treeage[order(rank(age), group)][,head(.SD,3),by=group] #subset the 3 youngest trees for each unique group
+group_age_young  <- subset_mean_young [, .(age_mean_young = mean(age )), by = group] #compute the mean of the 3 youngest trees for each groups
+
+
+#merge results
+Reduce(merge,list(treeage,group_age,subset_quantile,group_age_young))[1:15] #Merging all the tables together
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+    group      age age_mean quantile_age age_mean_young
+ 1:     A 223.3887 239.2596     244.5437       148.0038
+ 2:     A 161.6411 239.2596     244.5437       148.0038
+ 3:     A 182.6885 239.2596     244.5437       148.0038
+ 4:     A 124.2682 239.2596     244.5437       148.0038
+ 5:     A 246.7536 239.2596     244.5437       148.0038
+ 6:     A 244.2981 239.2596     244.5437       148.0038
+ 7:     A 174.3656 239.2596     244.5437       148.0038
+ 8:     A 224.0229 239.2596     244.5437       148.0038
+ 9:     A 226.7270 239.2596     244.5437       148.0038
+10:     A 158.1021 239.2596     244.5437       148.0038
+11:     B 206.5320 258.5834     258.0855       120.9281
+12:     B 202.4177 258.5834     258.0855       120.9281
+13:     B 159.5641 258.5834     258.0855       120.9281
+14:     B 256.1903 258.5834     258.0855       120.9281
+15:     B 244.4180 258.5834     258.0855       120.9281
+#+end_example
+
+You can also see how to merge multiple data table together using the
+function =Reduce(merge, list(DT1, DT2, DT3, ...))= finding also in [[https://stackoverflow.com/questions/16186843/inline-code-in-org-mode][stackoverflow]].
+
+
+
+
+** TODO Generate a unique ID                                  :versions:hash:
+I was working using an SQL database that I was not administrate. I
+wanted to keep track of the database changes and be notify when I
+refresh my database if I download a new version of it or not. I find a
+hack using the package [[https://cran.r-project.org/web/packages/digest/digest.pdf][digest]] and the function =digest= which used
+hash. I suggest you to have a look on
+[[https://www.youtube.com/watch?v=DMtFhACPnTY][this video]] if you want to know more about how hash is compute.
+
+Basically, hash like =md5=, =sha1= or =sha256= are algorithm used for
+encryption. The property that I like in it is that they gave you a
+unique vector for each objects. For example if you have a =matrix= or a
+=data.frame=, and hash it, it will gave you a vector. Then, if you
+change a dot to a coma, or anything in the previous =matrix= or
+=data.frame=, and then hash it, it will result in a totally new vector.
+
+Here is how you do it in R:
+
+
+
+
+
+
+
+
+** READY Hide your password in R                                   :password:
+There is several way to hide password in R. I recommend you
+[[https://www.youtube.com/watch?v=8ZtInClXe1Q][to see this video]]
+if you want to have a more accurate picture on how to do
+it using fully encrypted password. There is specific libraries available
+in R which deal with encryption like [[https://cran.r-project.org/web/packages/sodium/vignettes/intro.html][sodium]] and also
+[[https://cran.r-project.org/web/packages/sodium/vignettes/crypto101.html][using XOR operator and others]]. 
+
+In my work I had to deal with a fix password like for example
+"password1234" that the administrator gave me and to enter it in my code when I need to login to the
+SQL database. In my opinion there is huge security issue using
+password like this. You can store the code name encrypted on your
+computer, however, when login, you will need to decrypt it and use the
+plain text format of your password to have access to the database or
+anything else. Anyway, I found how to encrypt my plain text password
+using the library [[https://cran.r-project.org/web/packages/PKI/PKI.pdf][PKI]] which used to encrypt and decrypt word.
+
+#+BEGIN_SRC R  :session encrypt :exports none
+
+setwd("./assets/data")
+
+#+END_SRC
+
+#+RESULTS:
+: org_babel_R_eoe
+
+For this tutorial you will need to generate a private key and a public
+key. The private key will generate a random vector which will be use
+to decrypt the password. You will need to carefully save it on your
+computer, otherwise you will cannot decrypt your password. The public
+key will be use to encrypt the password. Thus, you will use the 
+
+   
+
+#+begin_src R :session encrypt :exports both :results output
+library(PKI)
+#to be erase after first execution
+  # generate 2048-bit RSA key
+    key <- PKI.genRSAkey(bits = 2048L)
+##
+##      # extract private and public parts as PEM
+      priv.key <- PKI.save.key(key)
+      pub.key <- PKI.save.key(key, private=FALSE)
+##      # load back the public key separately
+      pub.k <- PKI.load.key(pub.key)
+##
+##      # encrypt with the public key
+      find_me <- PKI.encrypt(charToRaw("password1234"), pub.k) #to remove after saving it in a separate file
+
+find_me
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+  [1] 2d e3 a8 7f 47 ff 87 f3 33 a8 ad bf 0d 5b 6b bf 73 3d 25 a9 15 cb 4c 1d a9
+ [26] 79 d6 30 45 6d 5e 40 44 1d 17 b0 37 5c 6f 7a 75 7a 99 a7 4c 78 37 41 72 73
+ [51] a2 ad f7 ba d8 83 4f bc 57 f2 04 40 3a 65 96 b8 dc 41 6d 48 c3 ea ba 6a 13
+ [76] ef 9e 9d 4d 73 a8 e0 9b 45 95 85 66 4d ca 5e 88 07 8c e0 db b3 e2 3b 9e e0
+[101] e3 31 90 6a 1c e2 f1 e6 91 64 fd c2 01 a1 10 7c 3c fc f7 07 6b 40 16 1d 80
+[126] db 5d 3f 83 0b 1c d6 bf df 12 70 f8 67 09 3a e7 33 c4 3b c5 17 06 34 20 6e
+[151] 7f dc b4 01 f4 41 6f 5c d4 e1 11 29 ca e5 4b 14 b6 37 46 a7 18 c3 1d ce 75
+[176] 9d a6 ce f7 c0 5a 50 03 af 63 cc 02 94 e2 9b aa 56 e5 2f 28 99 5e e9 b6 6e
+[201] 50 5b ad 28 ba 2c d9 89 18 63 30 74 3c ab b2 67 85 e1 d8 8b 5e 36 ba 54 da
+[226] 59 f1 f8 4a 1a 1e f4 92 86 f5 7d a2 c1 b8 8d 97 ea cd d6 48 64 c8 cb ad 73
+[251] 9e f9 73 52 28 36
+#+end_example
+
+This is the result of the encryption of =password1234= using the public
+key. 
+
+
+Then we will need to store this encryption in a file on the computer
+AND also the private key, otherwise you cannot decrypt the password.
+
+
+#+begin_src R :session encrypt :exports both :results output
+
+##      # decrypt with private key
+##
+ save(  priv.key, file = "priv_key") #save private key in a separate file
+## # save(  pub.key, file = "pub_key") # no need to save public key
+ save(find_me, file = "find_me") #save encryption
+##
+## #remove object from the R history
+ rm( priv.key)
+ rm( pub.key)
+ rm(find_me)
+## #erase above code after first execution
+#+end_src
+
+#+RESULTS:
+
+
+#+BEGIN_SRC R  :session decrypt :exports none
+
+setwd("./assets/data")
+
+#+END_SRC
+
+#+RESULTS:
+: /home/tiphaine/blog/SampleStat
+
+And here starting a fresh session of R to decrypt your password: 
+#+begin_src R :exports both :results ouptput :session decrypt
+
+#when starting a new session use:
+library(PKI)
+
+load("priv_key") #load private key. Cannot be load in the PKI.decrypt function
+load("find_me") #load the password to decrypt
+
+
+rawToChar(PKI.decrypt(find_me, PKI.load.key(priv.key)))#print password - erase this line after making sure this is working
+
+#+end_src
+
+#+RESULTS:
+: password1234
+
+Here you had your decrypt password. 
+
+
+
 * Blog                                                                 :Blog:
 ** TODO Blogging with Emacs in org-mode                           :org:Emacs:
    As I already told you in my first blog-post, I use to blog here with
@@ -1059,3 +1294,4 @@ dev.off()
    you to have all your blog posts within one =.org= file. This is very
    convenient to find older blog post and a clearer blog folder. Also,
    you can have your blog in your =.emacs= file if you want
+** TODO Synchronise org-mode files with your phone        :phone:synchronise:
