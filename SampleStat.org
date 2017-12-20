@@ -1162,7 +1162,12 @@ Here is how you do it in R:
 
 
 
-** READY Hide your password in R                                   :password:
+** DONE Hide your password in R                                    :password:
+   SCHEDULED: <2017-12-20 mer.>
+   :PROPERTIES:
+   :EXPORT_JEKYLL_LAYOUT:
+   :filename: 2017-12-20-hide-your-password-in-r
+   :END:
 There is several way to hide password in R. I recommend you
 [[https://www.youtube.com/watch?v=8ZtInClXe1Q][to see this video]]
 if you want to have a more accurate picture on how to do
@@ -1295,3 +1300,7 @@ Here you had your decrypt password.
    convenient to find older blog post and a clearer blog folder. Also,
    you can have your blog in your =.emacs= file if you want
 ** TODO Synchronise org-mode files with your phone        :phone:synchronise:
+
+
+
+ 
