@@ -1138,13 +1138,13 @@ function =Reduce(merge, list(DT1, DT2, DT3, ...))= finding also in [[https://sta
 
 
 
-** TODO Generate a unique ID                                  :versions:hash:
+** TODO Generate an unique ID                                 :versions:hash:
 I was working using an SQL database that I was not administrate. I
 wanted to keep track of the database changes and be notify when I
 refresh my database if I download a new version of it or not. I find a
 hack using the package [[https://cran.r-project.org/web/packages/digest/digest.pdf][digest]] and the function =digest= which used
 hash. I suggest you to have a look on
-[[https://www.youtube.com/watch?v=DMtFhACPnTY][this video]] if you want to know more about how hash is compute.
+[[https://www.youtube.com/watch?v=DMtFhACPnTY][this video]] if you want to know more about how hash is computed.
 
 Basically, hash like =md5=, =sha1= or =sha256= are algorithm used for
 encryption. The property that I like in it is that they gave you a
@@ -1155,9 +1155,116 @@ change a dot to a coma, or anything in the previous =matrix= or
 
 Here is how you do it in R:
 
+#+BEGIN_SRC R  :session unique  :exports none
+library(data.table)
+
+#+END_SRC
+
+#+RESULTS:
+| data.table |
+| digest     |
+| stats      |
+| graphics   |
+| grDevices  |
+| utils      |
+| datasets   |
+| methods    |
+| base       |
+
+
+#+BEGIN_SRC R  :session unique  :exports both :results output
+
+options(digits = 11)
+library(digest)
+set.seed(23) #
+my_vector <- rpois(60000, 50)
+sum(my_vector)
+
+
+#+END_SRC
+
+#+RESULTS:
+: [1] 2998341
+
+Now I will changed one value by adding 0.0001 to it 
+
+
+#+BEGIN_SRC R  :session unique  :exports both :results output
+
+my_modified_vector <- c(my_vector[1:100], my_vector[101]+0.0001, my_vector[102:length(my_vector)])
+sum(my_modified_vector)
+
+#+END_SRC
+
+#+RESULTS:
+: [1] 2998341.0001
+
+And then when we hash the two vectors, the results will be totally
+different:
+
+#+BEGIN_SRC R  :session unique  :exports both :results output
+
+digest(my_vector, algo = "sha1")
+
+digest(my_modified_vector, algo = "sha1")
+#+END_SRC
+
+#+RESULTS:
+: [1] "fcf8088c0824b33e87bd5b2f1d7035ebd271ac7d"
+: [1] "5d0f52a0a8826b4fdd0204dc18978393541fb7fe"
+
+The results will be the same (a total different outputs from digest)
+even if you change only one value from a table with billion of rows
+and columns. 
+
+
+*** How to do a version control from database?
+
+We learn how to create unique ID to a data frame or a vector. Then to
+keep always your database your working on up-to-date you will simply
+need to add the hash of the relative table to a version-control-table
+listing all the database  you are working with and see if the hash are
+the same from the one you previously worked with and the one you just
+load. You can as well add an increment name like V1.1, V1.2, etc. to
+add to your version-control-table.
+
+Here is how it work when you find a new version of your table in R:
+
+#+BEGIN_SRC R  :session unique  :exports both :results output
+library(data.table)
+
+
+    for (i in unique(dbListTables(KELuser)[!grepl("_fk", dbListTables(KELuser))]) [
+         unique(dbListTables(KELuser)[!grepl("_fk", dbListTables(KELuser))]) != c('test', 'dist_tree_chrono')]) {
+          library(digest)
+         # if (i != "regeneration_subplot") {
+
+          if(any(is.na(table_version[table == i, ]))) {
+              print(paste("Congratulation. A brand new table", toupper(i), "is available. Please wait until it download to your local drive", sep = " "))
+
+              table_version [table == i, hash := digest( dbReadTable(KELuser, i) , algo = "sha1")]#set hash for new tables
+              table_version [table == i, version := 1]#set verison to 1
+              fwrite(table_version, "table_version.csv")#write new table version
+
+          } else {
+
+              if( table_version [table == i, hash] !=  digest( dbReadTable(KELuser, i) , algo = "sha1")) { #Check if the hash from the table_version is the same as the one in the SQL database
+                  print(paste("Table", toupper(i), "is updating. Please wait", sep = " "))
+
+                  table_version [table == i, hash := digest( dbReadTable(KELuser, i) , algo = "sha1")] #update hash
+                  table_version [table == i, version := version + 1]#update version
+                  fwrite(table_version, "table_version.csv")#write new table version
+
+              } else {
+
+                  print(paste("Table", toupper(i), "is up-to-date.", sep = " "))
+              }
+          }
+      }
 
 
 
+#+END_SRC
 
 
 
